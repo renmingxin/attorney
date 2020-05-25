@@ -1,0 +1,124 @@
+.law-header-container{
+    .tab-search{
+        .el-tabs__header{
+            margin-bottom: 0px !important; 
+        }
+        .el-tabs__item{
+            height: 24px !important;
+            line-height: 24px !important;
+            text-align: center !important;
+            box-sizing: border-box;
+            padding: 0px !important;
+            font-size: 0.6rem;
+            color: $color1;
+            width: 2rem;
+        }
+        .el-tabs__item.is-active{
+            background-color: $themeColor !important;
+            color: $bg-color-white !important;
+            text-align: center !important;
+            
+        }
+        .el-input__prefix, .el-input__suffix{
+            color: $themeColor !important;
+        }
+        .el-tabs__active-bar{
+            background-color:$themeColor !important; 
+            height: 0px;
+        }
+        .el-tabs__content{
+            width: 450px;
+        }
+        .el-tabs__nav-wrap::after{
+            height: 0px !important;
+        }
+        .el-input__inner{
+            border: 1px solid $themeColor !important;
+            border-radius: 0px !important;
+        }
+        .el-input-group__append, .el-input-group__prepend{
+            background-color:$themeColor !important; 
+            color: $bg-color-white !important;
+            border-radius: 0px !important;
+            border: 1px solid $themeColor !important;
+        }
+        .el-input-group__append .el-button span{
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: normal;
+        }
+    }
+    .nav-bar{
+        .login{
+            .el-button--medium{
+                border-radius: 0px !important;
+            }
+            .el-button{
+                border: 0px;
+                color: $bg-color-white;
+                font-size: 0.8rem;
+                background-color: $themeColor;
+                font-weight: 400;
+            }
+        }
+    }
+}
+.index-content-fluid{
+    .aside{
+        .block1{
+            .el-button{
+                padding: 0px;
+            }
+            .el-button--text{
+                color: $color3;     
+                margin-left: 0.5rem;        
+            }
+        }
+        .block2{
+            .el-icon-arrow-right{
+                color:#000000;
+            }
+        }
+
+    }
+}
+.regulations-container{
+    .el-button:hover{
+        background-color: $bg-color-white;
+        color: $themeColor;
+        border: 1px solid $themeColor;
+    }
+    .el-button{
+        background-color: $bg-color-white;
+        color: $color4;
+        border: 1px solid $bg-color-gray;
+    }
+    .el-table .odd-row {
+        background-color: $bg-color-white;
+        height: 2rem;
+      }
+    .el-table .even-row {
+        background-color: $bg-color-gray3;
+        height: 2rem;
+      }
+      .el-table td, .el-table th{
+          padding: 0px;
+      }
+      .el-table__header-wrapper{
+          height: 30px;
+      }
+      .el-table th{
+          margin: 0px;
+          padding: 0px;
+      }
+      .el-table__body, .el-table__footer, .el-table__header{
+          height: 30px;
+      }
+      .el-table thead{
+        height: 30px;
+      }
+      .el-table th{
+        height: 30px;
+      }
+}
+
