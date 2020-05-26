@@ -9,6 +9,9 @@ import 'element-ui/lib/theme-chalk/index.css'
 import '@/common/styles/index.scss';
 import '@/assets/main.scss';
 
+import iView from 'iview';
+import 'iview/dist/styles/iview.css';
+
 import fontawesome from '@fortawesome/fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import solid from '@fortawesome/fontawesome-free-solid'
@@ -40,6 +43,7 @@ import 'quill/dist/quill.bubble.css'
 Vue.config.productionTip = false
 
 Vue.use(Element)
+Vue.use(iView)
 // Vue.use(VueQuillEditor)
 
 new Vue({

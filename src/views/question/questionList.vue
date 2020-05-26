@@ -58,7 +58,7 @@
                            
                             <div class="question-list-right">
                                 <span>{{item.answer}}回答</span>
-                                <span>{{item.date}}</span>
+                                <!-- <span>{{item.date}}</span> -->
                             </div>
                         </li> 
                     </ul>
@@ -96,11 +96,8 @@
   
 <script>
 // import { Button } from 'iview';
-import {Page} from 'iview'
 export default {
-    components:{
-        Page
-    },
+    
   	data () {
 		return {
             questionCount:760,
@@ -353,8 +350,8 @@ export default {
         background-size:100% 100%;
     }
     .container-main {
-        margin: 0 auto;
-        width: 70%;
+        // margin: 0 auto;
+        // width: 70%;
         /* height: 100px; */
     }
     .container-header {
@@ -389,14 +386,14 @@ export default {
     .header-main >ul{
         flex:1;
         padding: 5px 0 5px 30px;
-        border-right:1px solid #aaa;
+        border:1px solid #aaa;
         border-style:dashed;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
     }
     .header-main >ul:last-child{
-        border: none;
+        // border: none;
     }
     .header-main>ul>li{
         display: inline-block;
@@ -452,6 +449,7 @@ export default {
     .body-list {
         padding: 10px 20px;
         background: white;
+        font-size: 14px;
     }
     .body-nav .navActive{
         background: white;
@@ -521,12 +519,13 @@ export default {
         color: #aaa;
         width: 13%;
         min-width: 140px;
+        text-align: right;
     }
     .question-list-right span:hover {
        /* opacity: .8; */
     }
     .question-list-right>span:nth-child(1){
-        border-right: 1px solid;
+        // border-right: 1px solid;
         padding-right: 3px;
         /* line-height: 60px; */
     }

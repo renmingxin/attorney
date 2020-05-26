@@ -351,8 +351,8 @@ export default {
 			margin-top: 30px;
 			padding-top: 15px;
 			>div{
-				margin: 30px auto 0 auto;
-				width: 70%;
+				// margin: 30px auto 0 auto;
+				// width: 70%;
 				display: flex;
 				flex-direction: row;
 				.container-main-body-left{
