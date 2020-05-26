@@ -51,7 +51,7 @@
 							<ul>
 								<li v-for="(item,index) in commentList" :key="index">
 									<div class="comment-body-head">
-										<div>
+										<div @click="goUserPage">
 											<img src="@/images/u1.jpg" alt="">
 										</div>
 										<div>
@@ -309,7 +309,10 @@ export default {
                     this.commentList[i].zanUi = 2;
                 }
             }
-        }
+		},
+		goUserPage(){
+            this.$router.push({name:'helpList'});
+        },
 	}
 }
 </script>

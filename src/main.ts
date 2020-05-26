@@ -34,6 +34,7 @@ Vue.component('font-awesome-icon', FontAwesomeIcon)
 import '@/assets/iconfont/iconfont.css';
 //vue富文本
 // const { VueQuillEditor } = require('vue-quill-editor');
+import VueQuillEditor from 'vue-quill-editor';
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
@@ -44,7 +45,7 @@ Vue.config.productionTip = false
 
 Vue.use(Element)
 Vue.use(iView)
-// Vue.use(VueQuillEditor)
+Vue.use(VueQuillEditor)
 
 new Vue({
   router,
