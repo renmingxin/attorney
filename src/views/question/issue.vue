@@ -24,7 +24,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../assets/reset.css';
+
    .container-issue{
     //    border: 1px solid red;
        height: 1300px;

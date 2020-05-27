@@ -1,14 +1,19 @@
 @import './variables.scss';
 @import './element-ui.scss';
 html{
+    height: 100%;
     margin: 0px;
     font-size: 20px;
     padding: 0px;
 }
 body{
+    height: 100%;
     margin: 0px;
     padding: 0px;
     font-size: 20px;
+}
+#app{
+    height: 100%;
 }
 ul,li,p{
     padding: 0px;

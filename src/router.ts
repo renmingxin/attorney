@@ -7,11 +7,15 @@ Vue.use(Router)
 export default new Router({
 	mode: 'history',
 	routes: [
-
+        {
+            path: '/',
+            name: 'login',
+            component: () => import('./views/init/login.vue')
+        },
 		{
-			path: '/',
+			path: '/main',
 			name: 'main',
-			redirect:'/homepage2',
+			redirect:'/question',
 			component: HomePage,
 			children: [
 				{

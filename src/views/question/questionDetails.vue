@@ -51,7 +51,7 @@
 							<ul>
 								<li v-for="(item,index) in commentList" :key="index">
 									<div class="comment-body-head">
-										<div @click="goUserPage">
+										<div @click="goUserDetailsPage(item.name)">
 											<img src="@/images/u1.jpg" alt="">
 										</div>
 										<div>
@@ -310,9 +310,9 @@ export default {
                 }
             }
 		},
-		goUserPage(){
-            this.$router.push({name:'helpList'});
-        },
+        goUserDetailsPage(name){
+			this.$router.push({name:'userDetails',params:{name:name}})
+		}
 	}
 }
 </script>

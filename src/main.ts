@@ -26,22 +26,21 @@ fontawesome.library.add(brands)
 import { fas } from '@fortawesome/free-solid-svg-icons'
 library.add(fas)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
-
+Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
-Vue.component('font-awesome-icon', FontAwesomeIcon)
-// import '@/assets/reset.css';
 import '@/assets/iconfont/iconfont.css';
 //vue富文本
-// const { VueQuillEditor } = require('vue-quill-editor');
+
 import VueQuillEditor from 'vue-quill-editor';
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
-// import iView from 'iview';
+import {http} from '@/script/axios.js';
 
 
 Vue.config.productionTip = false
+Vue.prototype.$Http = http;
 
 Vue.use(Element)
 Vue.use(iView)

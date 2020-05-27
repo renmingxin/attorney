@@ -246,7 +246,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../assets/reset.css';
 	.test-border{
 		border: 1px solid red;
 	}
