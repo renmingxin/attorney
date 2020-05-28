@@ -1,27 +1,36 @@
-// var express = require('express');
-// var router = express.Router();
-
-// /* GET users listing. */
-// router.post('/login', function(req, res, next) {
-//     console.log(req)
-//     res.json({
-//         msg:[1,2,3]
-//     })
-// });
-
-// module.exports = router;
-const{ exec } = require('../db/mysql');
-
-const login = (username,password)=>{
-    const sql = `
-        select username,realname from users 
-        where username='${username}' and password='${password}'
-    `;
-    return exec(sql).then(rows=>{
-        return rows[0] || {}
-    })
-
-};
-module.exports = {
+var express = require('express');
+var router = express.Router();
+let {
     login,
-};
+    register
+} = require('../controller/user')
+/* GET users listing. */
+router.post('/login', function(req, res, next) {
+    let { username, password} = req.body;
+    let lastData = login(username,password);
+    lastData.then(response=>{
+        res.json({
+            msg:response
+        })
+    }).catch(rej=>{
+        res.json({
+            msg:rej
+        })
+    })
+});
+
+router.post('/register', function(req, res, next) {
+    let { nickname,username, password} = req.body;
+    let lastData = register(nickname,username,password);
+    lastData.then(response=>{
+        res.json({
+            msg:response
+        })
+    }).catch(rej=>{
+        res.json({
+            msg:rej
+        })
+    })
+});
+
+module.exports = router;

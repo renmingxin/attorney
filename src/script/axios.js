@@ -35,11 +35,10 @@ axios.interceptors.request.use(
 );
 axios.interceptors.response.use(
     (res) => {
-        console.log(res);
         if (res.data.msg !== undefined) {
             return res.data.msg
         }
-        return Promise.reject(tools.language.get(res.data.error));
+        return Promise.reject('error');
     },
     (error) => {
         return Promise.reject(error.toString());

@@ -8,8 +8,22 @@
             auto-complete="on"
             label-position="left">
             <div class="title-container">
-                <h3 class="title">律师问答平台</h3>
+                <h3 class="title">平台注册</h3>
             </div>
+            <el-form-item prop="nickname" >
+                <span class="svg-container">
+                    <i class="el-icon-star-off" />
+                </span>
+                <el-input
+                    ref="nickname"
+                    v-model="loginForm.nickname"
+                    placeholder="请输入昵称"
+                    name="nickname"
+                    type="text"
+                    tabindex="1"
+                    auto-complete="on"
+                />
+            </el-form-item>
             <el-form-item prop="username" >
                 <span class="svg-container">
                     <i class="el-icon-user-solid" />
@@ -47,12 +61,12 @@
                 type="primary"
                 style="display:inline-block;width:71%;margin-bottom:30px;"
                 @click.native.prevent="handleLogin"
-            >登录</el-button>
+            >注册</el-button>
             <el-button 
                 type="info" 
                 style="display:inline-block;width:25%;margin-bottom:30px;"
-                @click="gotoRegister"
-            >注册</el-button>
+                @click="gotoLoginPage"
+            >返回登录页</el-button>
         </el-form>
     </div>
 </template>
@@ -61,6 +75,13 @@
 export default {
     name: 'Login',
     data() {
+        const validateNickname = (rule, value, callback) => {
+            if (!value) {
+                callback(new Error('昵称不能为空'))
+            } else {
+                callback()
+            }
+        }
         const validateUsername = (rule, value, callback) => {
             if (!value) {
                 callback(new Error('用户名不能为空'))
@@ -77,10 +98,12 @@ export default {
         }
         return {
             loginForm: {
-                username: sessionStorage.getItem('username') || '',
+                nickname:'',
+                username:'',
                 password: ''
             },
             loginRules: {
+                nickname: [{ required: true, trigger: 'blur', validator: validateNickname }],
                 username: [{ required: true, trigger: 'blur', validator: validateUsername }],
                 password: [{ required: true, trigger: 'blur', validator: validatePassword }]
             },
@@ -108,26 +131,30 @@ export default {
                 this.$refs.password.focus()
             })
         },
-        gotoRegister(){
-            this.$router.push({name:'register'});
+        gotoLoginPage(){
+            this.$router.push({name:'login'});
         },
         handleLogin() {
             this.$refs.loginForm.validate(valid => {
                 if (valid) {
-                    let msg = {username: this.loginForm.username, password: this.loginForm.password};
+                    let {nickname,username,password} = this.loginForm;
+                    let msg = {
+                        nickname,
+                        username,
+                        password
+                    }
                     let callback = {
                         onOk: (data) => {
+                            console.log(data);
                             if(!data.errno){
-                                sessionStorage.setItem('username',msg.username);
-                                sessionStorage.setItem('nickname',data.name)
                                 this.$Notice.success({
-                                    title: '登录成功',
+                                    title: '注册成功',
                                 });
-                                this.$router.push({name:'main'});
+                                this.$router.push({name:'login'});
                             }else {
                                 this.$Notice.error({
-                                    title: '登录失败',
-                                    desc:'用户名或者密码错误'
+                                    title: '注册失败',
+                                    desc:'有重复的用户名'
                                 });
                             }
                         },
@@ -135,7 +162,7 @@ export default {
                             console.log(error)
                         }
                     }
-                    this.$Http.post('/users/login', msg, callback)
+                    this.$Http.post('/users/register', msg, callback)
                 }
             })
         }
@@ -197,9 +224,10 @@ $dark_gray: #889aa4;
 $light_gray: #fff;
 
 .login-container {
-    background-image: url('../../images/5.jpg');
-    background-size: cover;
-    background-position: center 0;
+    background: $bg;
+    // background-image: url('../../images/5.jpg');
+    // background-size: cover;
+    // background-position: center 0;
     width: 100%;
     height: 100%;
     // background-color: $bg;
