@@ -20,8 +20,8 @@ router.post('/login', function(req, res, next) {
 });
 
 router.post('/register', function(req, res, next) {
-    let { nickname,username, password} = req.body;
-    let lastData = register(nickname,username,password);
+    let { nickname,username, password, roleType} = req.body;
+    let lastData = register(nickname,username,password,roleType*1);
     lastData.then(response=>{
         res.json({
             msg:response

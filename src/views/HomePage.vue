@@ -2,8 +2,9 @@
     <div class="law-fluid">
         <div class="law-header-fluid law-fluid">
             <div class="law-header-container law-container">
-                    <div class="logo">
-                        <img src="../assets/index/logo.png" alt="">
+                    <div class="logo" >
+                        <span>你好！{{nickname}}{{roleType}}</span>
+                        <!-- <img src="../assets/index/logo.png" alt=""> -->
                     </div>
                     <div class="tab-search">
                          <el-tabs v-model="activeName" @tab-click="handleClick">
@@ -60,6 +61,8 @@
             input2:'',
             input3:'',
             input4:'',
+            nickname:sessionStorage.getItem('nickname'),
+            roleType:sessionStorage.getItem('roleType') === '2' ? '律师':'用户',
             tableData: [{
                 name: '挖掘机师傅风险告知卡机师傅机师…（3页）',
                 score: '200',
@@ -637,11 +640,14 @@
 .law-header-container{
     height: 5rem;
     .logo{
-        width: 7.8rem;
+        width: 10rem;
         height: 5rem;
         padding-top: 1.5rem;
         box-sizing: border-box;
         float: left;
+        // border:1px solid;
+        font-size: 20px;
+        color:#741b29;
         img{
             width: 100%;
             height: 2rem;
@@ -700,7 +706,7 @@
 }
 .index-content-fluid{
     // border:1px solid red;
-    background-color: $bg-color-gray;
+    // background-color: $bg-color-gray;
     padding-bottom: 2rem;
     .index-content-container{
         display: flex;

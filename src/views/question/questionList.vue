@@ -40,15 +40,15 @@
                 </div>
                 <div class="body-list">
                     <ul v-if="navActive === 'navActive1'">
-                        <li v-for="(item,index) in questionList" :key="index">
-                            <!-- <div class="question-list-money" >
+                        <li v-for="(item,index) in questionList2" :key="index">
+                            <div class="question-list-money">
                                 <span class="iconfont icon-money2"> </span>
                                 <span class="money">{{item.money}}</span>
-                            </div> -->
+                            </div>
                             <div class="question-list-content">
                                 <div class="title" @click="goQuestionDetailsPage(item)">{{item.title}}</div>
                                 <div class="pay">
-                                    <span class="iconfont icon-biaoqian"></span>
+                                    <i class="iconfont icon-biaoqian"></i>
                                     <span>支付宝</span>
                                     <span>信用卡</span>
                                     <span>支付平台</span>
@@ -57,8 +57,7 @@
                             </div>
                            
                             <div class="question-list-right">
-                                <span>{{item.answer}}回答</span>
-                                <!-- <span>{{item.date}}</span> -->
+                                <span>{{item.create_time}}</span>
                             </div>
                         </li> 
                     </ul>
@@ -80,13 +79,12 @@
                             </div>
                            
                             <div class="question-list-right">
-                                <span>{{item.answer+3}}回答</span>
                                 <span>{{item.date}}</span>
                             </div>
                         </li> 
                     </ul>
                     <div class="page">
-                        <Page :total="questionList.length" size="small" show-total />
+                        <Page :total="questionList2.length" size="small" show-total />
                     </div>
                 </div>
             </div>
@@ -293,6 +291,7 @@ export default {
                     ]
                 },
             ],
+            questionList2:[],
             formatLaw:[],
 
             navActive:'navActive1'
@@ -305,9 +304,28 @@ export default {
 
 	},
 	mounted(){
+        this.getIssueList();
         this.get15question();
 	},
 	methods:{
+        getIssueList(){
+            let msg = {};
+            console.log(msg)
+            let callback = {
+                onOk: (data) => {
+                   if(!data.errno){
+                       console.log(data)
+                       this.questionList2 = data;
+                   }
+                },
+                onError: (error) => {
+                    console.log(error)
+                }
+            }
+            this.$Http.post('/issue/selectIssueList', msg, callback)
+        },
+
+
 		get15question(){
             let arr = [],
                 lastArr = [];

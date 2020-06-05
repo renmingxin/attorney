@@ -118,8 +118,12 @@ export default {
                     let callback = {
                         onOk: (data) => {
                             if(!data.errno){
-                                sessionStorage.setItem('username',msg.username);
-                                sessionStorage.setItem('nickname',data.name)
+                                console.log(data);
+                                sessionStorage.setItem('userId',data.id);
+                                sessionStorage.setItem('username',data.username);
+                                sessionStorage.setItem('nickname',data.name);
+                                sessionStorage.setItem('roleType',data['role_type']);
+                                sessionStorage.setItem('money',data.money);
                                 this.$Notice.success({
                                     title: '登录成功',
                                 });

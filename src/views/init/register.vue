@@ -57,6 +57,13 @@
                     <!-- <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" /> -->
                 </span>
             </el-form-item>
+            <el-form-item prop="role">
+                <span style="padding:0 20px;color:rgb(192, 196, 204);" >角色选择</span>
+                <el-radio-group v-model="loginForm.roleType">
+                    <el-radio label="1">提问用户方</el-radio>
+                    <el-radio label="2">回答律师方</el-radio>
+                </el-radio-group>
+            </el-form-item>
             <el-button
                 type="primary"
                 style="display:inline-block;width:71%;margin-bottom:30px;"
@@ -100,7 +107,8 @@ export default {
             loginForm: {
                 nickname:'',
                 username:'',
-                password: ''
+                password: '',
+                roleType:'1'
             },
             loginRules: {
                 nickname: [{ required: true, trigger: 'blur', validator: validateNickname }],
@@ -137,21 +145,23 @@ export default {
         handleLogin() {
             this.$refs.loginForm.validate(valid => {
                 if (valid) {
-                    let {nickname,username,password} = this.loginForm;
+                    let {nickname,username,password,roleType} = this.loginForm;
                     let msg = {
                         nickname,
                         username,
-                        password
+                        password,
+                        roleType
                     }
                     let callback = {
                         onOk: (data) => {
                             console.log(data);
-                            if(!data.errno){
+                            if(data === null){
                                 this.$Notice.success({
                                     title: '注册成功',
                                 });
                                 this.$router.push({name:'login'});
-                            }else {
+                            }
+                            if(data.errno){
                                 this.$Notice.error({
                                     title: '注册失败',
                                     desc:'有重复的用户名'

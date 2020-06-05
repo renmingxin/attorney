@@ -2,7 +2,7 @@ const{ exec } = require('../conf/db');
 
 const login = (username,password)=>{
     const sql = `
-        select name from common_user 
+        select * from user 
         where username='${username}' and password='${password}'
     `;
     return exec(sql).then(rows=>{
@@ -11,10 +11,10 @@ const login = (username,password)=>{
     })
 
 };
-const register = (nickname,username,password)=>{
+const register = (nickname,username,password,roleType)=>{
     const sql = `
-        INSERT INTO common_user (name,username,password) 
-        VALUES ('${nickname}','${username}','${password}');
+        INSERT INTO user (name,username,password,role_type) 
+        VALUES ('${nickname}','${username}','${password}','${roleType}');
     `;
     return exec(sql).then(rows=>{
         return rows[0] || null

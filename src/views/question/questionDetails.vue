@@ -51,26 +51,24 @@
 							<ul>
 								<li v-for="(item,index) in commentList" :key="index">
 									<div class="comment-body-head">
-										<div @click="goUserDetailsPage(item.name)">
+										<div @click="goUserDetailsPage(item.user_id)">
 											<img src="@/images/u1.jpg" alt="">
 										</div>
 										<div>
 											<div class="name">{{item.name}}</div>
-											<div class="date">{{item.date}}</div>
+											<div class="date">{{item.create_time}}</div>
 										</div>
 									</div>
 									<div class="comment-body-content" v-html="item.content"></div>
 									<div class="comment-body-footer">
 										<div class="comment-body-footer-left">
-											<div class="zan-div">
+											<!-- <div class="zan-div">
 												<div @click="zan(item.id)">
-													<!-- <span  class="iconfont icon-zan1"></span> -->
                                                     <span v-if="item.zanUi === 1" class="iconfont icon-zan2"></span>
                                                     <span v-if="item.zanUi === 0 || item.zanUi===2" class="iconfont icon-zan1"></span>
 													<span >{{item.zan}}</span>
 												</div>
 												<div @click="cai(item.id)">
-													<!-- <span class="iconfont icon-daozan1"></span> -->
                                                     <span v-if="item.zanUi === 2" class="iconfont icon-daozan2"></span>
                                                     <span v-if="item.zanUi === 0 || item.zanUi === 1" class="iconfont icon-daozan1"></span>
 													<span>{{item.cai}}</span>
@@ -79,7 +77,7 @@
 											<div class="qipao">
 												<span class="iconfont icon-qipao"></span>
 												<span>评论</span>
-											</div>
+											</div> -->
 										</div>
 										<div class="comment-body-footer-right" @click="caina(item.id)">
 											<span v-if="item.accept === false" class="iconfont icon-xin"></span>
@@ -220,28 +218,6 @@ export default {
 			richcContent:'这个问题你有什么看法，展开来讲讲...',
 			editorOption: {},
 			commentList:[
-				{
-                    id:1,
-					img:'',
-					name:'Jack Lee',
-					date:'2019-09-01',
-					content:'你好，这种情况只能是你来举证了，建议你把所有账单列清楚，然后把计算过程列出来，全部提供给客服核实，不过我感觉不一定是系统算错了，因为系统是计算机算到，就一个加减法计算机没有理由会错。',
-					zan:123,
-                    cai:8,
-                    accept:false,
-                    zanUi:0,
-				},
-				{
-                    id:2,
-					img:'',
-					name:'Jack Lee',
-					date:'2019-09-01',
-					content:'你好，这种情况只能是你来举证了，建议你把所有账单列清楚，然后把计算过程列出来，全部提供给客服核实，不过我感觉不一定是系统算错了，因为系统是计算机算到，就一个加减法计算机没有理由会错。',
-					zan:123,
-                    cai:8,
-                    accept:false,
-                    zanUi:0,
-				},
 			],
 			myComment:'',
 			answerCount:2,
@@ -256,11 +232,32 @@ export default {
 
 	},
 	mounted(){
+        this.getIssueAnswerList();
         this.questionMsg = this.$route.params;
-        this.commentList = this.$route.params.discuss;
+        console.log(this.$route.params)
+        // this.commentList = this.$route.params.discuss;
 		this.fliterContent = this.questionMsg.content.substring(0,70) + '...';
 	},
 	methods:{
+        getIssueAnswerList(){
+            let msg = {
+                question_id:this.$route.params.id,
+            };
+            console.log(msg)
+            let callback = {
+                onOk: (data) => {
+                   if(!data.errno){
+                       this.commentList = data;
+                       console.log(data)
+                   }
+                },
+                onError: (error) => {
+                    console.log(error)
+                }
+            }
+            this.$Http.post('/issue/selectIssueAnswerList', msg, callback)
+        },
+
 		showMoreContent(){
 			this.smallContent = false;
 			this.fliterContent = this.questionMsg.content;
@@ -270,20 +267,25 @@ export default {
         onEditorBlur(){}, // 失去焦点事件
         onEditorFocus(){}, // 获得焦点事件
         onEditorChange(){}, // 内容改变事件
-        saveHtml:function(event){
-			this.myComment = this.richcContent;
-        	// alert(this.richcContent);
-            this.commentList.unshift({
-                id:parseInt(Math.random()*1000000),
-                img:'',
-                name:'游客',
-                date: new Date().toLocaleString(),
+        saveHtml(){
+			let msg = {
+                question_id:this.$route.params.id,
+                user_id:sessionStorage.getItem('userId'),
                 content:this.richcContent,
-                zanUi:0,//0没有点赞 1赞 2踩
-                zan:0,
-                cai:0,
-                accept:false,//是否采纳
-            })
+                create_time:new Date().toLocaleString()
+            };
+            console.log(msg)
+            let callback = {
+                onOk: (data) => {
+                   if(data === null){
+                       this.getIssueAnswerList();
+                   }
+                },
+                onError: (error) => {
+                    console.log(error)
+                }
+            }
+            this.$Http.post('/issue/answerIssue', msg, callback)
         },
         caina(id){
             for (let i = 0; i < this.commentList.length; i++) {
