@@ -78,10 +78,10 @@ export default {
                 issueDetails:this.issueParams.issueDetails,
                 createTime:new Date().toLocaleString()
             };
-            console.log(msg)
             let callback = {
                 onOk: (data) => {
                    if(data === null){
+                        this.lessMoney();
                         this.$Message.success('提交成功');
                         this.$router.push({name:'main'});
                    }
@@ -91,6 +91,23 @@ export default {
                 }
             }
             this.$Http.post('/issue/putIssue', msg, callback)
+        },
+        lessMoney(){
+            let msg = {
+                userId:sessionStorage.getItem('userId') * 1,
+                money: this.issueParams.payMoney,
+            };
+            let callback = {
+                onOk: (data) => {
+                   if(data === null){
+                      
+                   }
+                },
+                onError: (error) => {
+                    console.log(error)
+                }
+            }
+            this.$Http.post('/issue/lessMoney', msg, callback)
         }
     }
 }

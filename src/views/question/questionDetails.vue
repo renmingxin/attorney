@@ -12,7 +12,7 @@
 					<div class="quesion">
 						<div class="quesion-title">
 							<span>{{questionMsg.title}}</span>
-							<i class="iconfont icon-money2"><span>50</span></i>
+							<i class="iconfont icon-money2"><span>{{questionMsg.money}}</span></i>
 						</div>
 						<div class="quesion-content">
 							<span>{{fliterContent}}</span>
@@ -21,11 +21,11 @@
 								<span class="iconfont icon-xiangxia"></span>
 							</span>
 						</div>
-						<div class="quesion-answer-btn">
+						<div class="quesion-answer-btn" v-if="roleType === '2'">
 							<span class="iconfont icon-fabu"></span>
 							<span>我来回答</span>
 						</div>
-						<div class="quesion-richtext">
+						<div class="quesion-richtext" v-if="roleType === '2'">
 							<div class="edit_container">
 								<quill-editor 
 									v-model="richcContent" 
@@ -37,14 +37,14 @@
 								</quill-editor>
 							</div>
 						</div>
-						<div class="quesion-sumbit" >
+						<div class="quesion-sumbit" v-if="roleType === '2'">
 							<span v-on:click="saveHtml">提交回答</span>
 						</div>
 					</div>
 					<div class="comment">
 						<!-- <div v-html="myComment"></div> -->
 						<div class="comment-header">
-							<div class="count">{{answerCount}}个回答</div>
+							<div class="count">{{commentList.length || 0}}个回答</div>
 							<div class="line"></div>
 						</div>
 						<div class="comment-body">
@@ -79,10 +79,11 @@
 												<span>评论</span>
 											</div> -->
 										</div>
-										<div class="comment-body-footer-right" @click="caina(item.id)">
-											<span v-if="item.accept === false" class="iconfont icon-xin"></span>
-											<span v-if="item.accept" class="iconfont icon-xin2"></span>
+										<div class="comment-body-footer-right" v-if="isSelf&&item.zan !== 1" @click="caina(item)">
                                             <span class="caina">采纳</span>
+										</div>
+                                        <div class="comment-body-footer-right" v-else>
+                                            <span class="caina">已采纳</span>
 										</div>
 									</div>
 								</li>
@@ -227,6 +228,13 @@ export default {
 		editor() {
             return this.$refs.myQuillEditor.quill;
         },
+        roleType(){
+            return sessionStorage.getItem('roleType') || ''
+        },
+        isSelf(){
+            let { user_id } = this.$route.params;
+            return user_id == sessionStorage.getItem('userId');
+        },
 	},
 	created(){
 
@@ -287,14 +295,48 @@ export default {
             }
             this.$Http.post('/issue/answerIssue', msg, callback)
         },
-        caina(id){
-            for (let i = 0; i < this.commentList.length; i++) {
-                if(id === this.commentList[i].id){
-                    this.commentList[i].accept = true;
-                }else{
-                    this.commentList[i].accept = false;
+        caina(item){
+             this.$Modal.confirm({
+                title:'操作',
+                content: "确定采纳该回答",
+                onOk: () => {
+                    console.log(item)
+                    this.cainaHandle1(item.id);
+                    this.cainaHandleAddMoney(item.user_id,this.questionMsg.money)
+                }
+            })
+        },
+        cainaHandle1(id){
+            let msg = {
+                id:id
+            };
+            let callback = {
+                onOk: (data) => {
+                   if(data.msg === null){
+                       this.getIssueAnswerList();
+                   }
+                },
+                onError: (error) => {
+                    console.log(error)
                 }
             }
+            this.$Http.post('/issue/zainaAnswer', msg, callback)
+        },
+        cainaHandleAddMoney(userId,money){
+            let msg = {
+                userId,
+                money
+            };
+            let callback = {
+                onOk: (data) => {
+                   if(data.msg === null){
+                   }
+                },
+                onError: (error) => {
+                    console.log(error)
+                }
+            }
+            this.$Http.post('/issue/zainaAnswerAddMoney', msg, callback)
         },
         zan(id){
             for (let i = 0; i < this.commentList.length; i++) {

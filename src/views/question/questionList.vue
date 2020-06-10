@@ -29,9 +29,9 @@
                 <div class="body-nav">
                     <div class="body-nav-left">
                         <div :class="{navActive:navActive === 'navActive1'}" @click="changePage('navActive1')">新提问</div>
-                        <div :class="{navActive:navActive === 'navActive2'}" @click="changePage('navActive2')">高悬赏问题</div>
+                        <!-- <div :class="{navActive:navActive === 'navActive2'}" @click="changePage('navActive2')">高悬赏问题</div> -->
                     </div>
-                    <div class="body-nav-right">
+                    <div class="body-nav-right" v-if="roleType === '1'">
                         <div @click="goIssue">
                             <span class="iconfont icon-fabu"></span>
                             <span>发布</span>
@@ -61,28 +61,6 @@
                             </div>
                         </li> 
                     </ul>
-                    <ul v-if="navActive === 'navActive2'">
-                        <li v-for="(item,index) in questionList" :key="index">
-                            <div class="question-list-money">
-                                <span class="iconfont icon-money2"> </span>
-                                <span class="money">{{item.money}}</span>
-                            </div>
-                            <div class="question-list-content">
-                                <div class="title" @click="goQuestionDetailsPage(item)">{{item.title}}</div>
-                                <div class="pay">
-                                    <i class="iconfont icon-biaoqian"></i>
-                                    <span>支付宝</span>
-                                    <span>信用卡</span>
-                                    <span>支付平台</span>
-                                </div>
-                                <div class="content" @click="goQuestionDetailsPage(item)">{{item.content}}</div>
-                            </div>
-                           
-                            <div class="question-list-right">
-                                <span>{{item.date}}</span>
-                            </div>
-                        </li> 
-                    </ul>
                     <div class="page">
                         <Page :total="questionList2.length" size="small" show-total />
                     </div>
@@ -94,6 +72,7 @@
   
 <script>
 // import { Button } from 'iview';
+import bus from '@/script/bus'
 export default {
     
   	data () {
@@ -155,38 +134,6 @@ export default {
                             name:'Jack Lee',
                             date:'2019-09-01',
                             content:'你好，这种情况只能是你来举证了，建议你把所有账单列清楚，然后把计算过程列出来，全部提供给客服核实，不过我感觉不一定是系统算错了，因为系统是计算机算到，就一个加减法计算机没有理由会错。',
-                            zan:123,
-                            cai:8,
-                            accept:false,
-                            zanUi:0,
-                        },
-                    ]
-                },
-                {
-                    money:100,
-                    title:'外遇出轨的男人和蟑螂的区别是什么？',
-                    content:'外遇出轨的男人和蟑螂的区别是什么？',
-                    type:'审计法、广告法',
-                    answer:5,
-                    date:'12分钟之前',
-                    discuss:[
-                        {
-                            id:1,
-                            img:'',
-                            name:'Jack Lee',
-                            date:'2019-09-01',
-                            content:'虽然说外遇出轨的男人和蟑螂都很令人讨厌，但是还是有区别的，遇到外遇出轨的男人，你想把他弄死，那你是犯法的，但是你要是想踩死一只蟑螂，那是非常正常的，这就是区别',
-                            zan:123,
-                            cai:8,
-                            accept:false,
-                            zanUi:0,
-                        },
-                        {
-                            id:2,
-                            img:'',
-                            name:'Jack Lee',
-                            date:'2019-09-01',
-                            content:'他们的区别是出轨的男人你不能踩死他，而你可以随意把讨厌的蟑螂踩死。',
                             zan:123,
                             cai:8,
                             accept:false,
@@ -298,23 +245,39 @@ export default {
 		}
 	},
 	computed:{
-
-	},
+        roleType(){
+            return sessionStorage.getItem('roleType') || ''
+        },
+        
+    },
+    watch:{
+        
+    },
 	created(){
 
 	},
 	mounted(){
         this.getIssueList();
         this.get15question();
-	},
+        bus.$on('getIssueList',this.getLikeList)
+    },
+    beforeDestroy(){
+        sessionStorage.removeItem('questionList');
+    },
 	methods:{
+        getLikeList(data){
+            console.log(data)
+            this.questionList2 = data
+        },
         getIssueList(){
             let msg = {};
-            console.log(msg)
             let callback = {
                 onOk: (data) => {
                    if(!data.errno){
                        console.log(data)
+                       data.sort((a,b)=>{
+                           return b.id - a.id
+                       })
                        this.questionList2 = data;
                    }
                 },

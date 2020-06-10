@@ -34,6 +34,17 @@ const putIssue = (id,title, payMoney, issueDetails,createTime)=>{
 
 };
 
+//提出问题后扣掉你的钱
+const lessMoney = (userid,money)=>{
+    const sql = `
+        update user set money = money - '${money}' where id = '${userid}';
+    `;
+    return exec(sql).then(rows=>{
+        return rows[0] || null
+    })
+
+};
+
 //回答问题
 const answerIssue = (question_id,user_id, content, create_time)=>{
     const sql = `
@@ -46,9 +57,45 @@ const answerIssue = (question_id,user_id, content, create_time)=>{
 
 };
 
+// 搜索问题
+const selectIssue = (title)=>{
+    const sql = `
+        select * from question where title like '%${title}%';
+    `;
+    return exec(sql).then(rows=>{
+        return rows || null
+    })
+
+};
+
+// 采纳回答
+const zainaAnswer = (id)=>{
+    const sql = `
+        update answer set zan = 1 where id = '${id}';
+    `;
+    return exec(sql).then(rows=>{
+        return rows[0] || null
+    })
+
+};
+// 采纳回答后给用户加钱
+const zainaAnswerAddMoney = (userid,money)=>{
+    const sql = `
+        update user set money = money + '${money}' where id = '${userid}';
+    `;
+    return exec(sql).then(rows=>{
+        return rows[0] || null
+    })
+
+};
+
 module.exports = {
     selectIssueList,
     getIssueAnswerList,
     answerIssue,
+    selectIssue,
     putIssue,
+    zainaAnswer,
+    zainaAnswerAddMoney,
+    lessMoney
 };

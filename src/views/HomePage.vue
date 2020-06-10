@@ -7,20 +7,10 @@
                         <!-- <img src="../assets/index/logo.png" alt=""> -->
                     </div>
                     <div class="tab-search">
-                         <el-tabs v-model="activeName" @tab-click="handleClick">
+                         <el-tabs v-model="activeName" >
                              <el-tab-pane label="问题" name="first" :key="2">
                                 <el-input placeholder="请输入问题" v-model="input2" class="input-with-select"  prefix-icon="el-icon-search" size="medium">
-                                        <el-button slot="append"> 搜索</el-button>
-                                </el-input>
-                            </el-tab-pane>
-                            <el-tab-pane label="文档" name="second" :key="1">
-                                <el-input placeholder="请输入文档" v-model="input1" class="input-with-select"  prefix-icon="el-icon-search" size="medium">
-                                        <el-button slot="append"> 搜索</el-button>
-                                </el-input>
-                            </el-tab-pane>
-                            <el-tab-pane label="律师" name="third" :key="3">
-                                <el-input placeholder="请输入律师" v-model="input3" class="input-with-select"  prefix-icon="el-icon-search" size="medium">
-                                        <el-button slot="append"> 搜索</el-button>
+                                    <el-button slot="append" @click="handleClick">搜索</el-button>
                                 </el-input>
                             </el-tab-pane>
                         </el-tabs>
@@ -33,7 +23,7 @@
                             <div class="clear"></div>
                         </ul>
                         <div class="login">
-                             <el-button size="medium">登录 | 注册</el-button>
+                             <el-button size="medium">用户中心</el-button>
                         </div>
                     </div>
             </div>
@@ -46,6 +36,7 @@
 
 <script>
 // import HelloWorld from '@/components/HelloWorld.vue'; 
+    import bus from '@/script/bus'
     export default {
     name: 'homePage',
     components: {
@@ -208,7 +199,23 @@
     },
     methods: {
         handleClick() {
-            
+            this.getIssueList(this.input2)
+        },
+        getIssueList(title){
+            let msg = {
+                title:title
+            };
+            let callback = {
+                onOk: (data) => {
+                   if(!data.errno){
+                       bus.$emit('getIssueList',data);
+                   }
+                },
+                onError: (error) => {
+                    console.log(error)
+                }
+            }
+            this.$Http.post('/issue/selectIssue', msg, callback)
         },
         tableRowClassName({row, rowIndex}) {
             if (rowIndex%2 ===0) {

@@ -4,7 +4,11 @@ let {
     selectIssueList,
     putIssue,
     answerIssue,
-    getIssueAnswerList
+    selectIssue,
+    getIssueAnswerList,
+    zainaAnswer,
+    zainaAnswerAddMoney,
+    lessMoney
 } = require('../controller/issue')
 /* GET users listing. */
 
@@ -52,6 +56,59 @@ router.post('/putIssue', function(req, res, next) {
 router.post('/answerIssue', function(req, res, next) {
     let { question_id,user_id, content, create_time} = req.body;
     let lastData = answerIssue(question_id * 1,user_id * 1, content, create_time);
+    lastData.then(response=>{
+        res.json({
+            msg:response
+        })
+    }).catch(rej=>{
+        res.json({
+            msg:rej
+        })
+    })
+});
+
+router.post('/selectIssue', function(req, res, next) {
+    let { title} = req.body;
+    let lastData = selectIssue(title);
+    lastData.then(response=>{
+        res.json({
+            msg:response
+        })
+    }).catch(rej=>{
+        res.json({
+            msg:rej
+        })
+    })
+});
+router.post('/zainaAnswer', function(req, res, next) {
+    let { id} = req.body;
+    let lastData = zainaAnswer(id * 1);
+    lastData.then(response=>{
+        res.json({
+            msg:response
+        })
+    }).catch(rej=>{
+        res.json({
+            msg:rej
+        })
+    })
+});
+router.post('/zainaAnswerAddMoney', function(req, res, next) {
+    let { userId,money} = req.body;
+    let lastData = zainaAnswerAddMoney(userId * 1, money * 1);
+    lastData.then(response=>{
+        res.json({
+            msg:response
+        })
+    }).catch(rej=>{
+        res.json({
+            msg:rej
+        })
+    })
+});
+router.post('/lessMoney', function(req, res, next) {
+    let { userId,money} = req.body;
+    let lastData = lessMoney(userId * 1, money * 1);
     lastData.then(response=>{
         res.json({
             msg:response
