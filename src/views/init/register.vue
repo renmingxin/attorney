@@ -64,6 +64,31 @@
                     <el-radio label="2">回答律师方</el-radio>
                 </el-radio-group>
             </el-form-item>
+            <el-form-item prop="phone" v-if="loginForm.roleType === '2'">
+                <span class="svg-container">
+                    <i class="el-icon-mobile-phone" />
+                </span>
+                <el-input
+                    ref="phone"
+                    v-model="loginForm.phone"
+                    placeholder="请输入你的手机号"
+                    name="phone"
+                    type="text"
+                    tabindex="1"
+                    auto-complete="on"
+                />
+            </el-form-item>
+            <el-form-item prop="tags" v-if="loginForm.roleType === '2'">
+                <span style="padding:0 20px;color:rgb(192, 196, 204);" >擅长领域</span>
+                <el-select v-model="loginForm.selectTags" multiple collapse-tags placeholder="请选择您所擅长的领域">
+                    <el-option
+                    v-for="item in tagsList"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                    </el-option>
+                </el-select>
+            </el-form-item>
             <el-button
                 type="primary"
                 style="display:inline-block;width:71%;margin-bottom:30px;"
@@ -108,8 +133,23 @@ export default {
                 nickname:'',
                 username:'',
                 password: '',
-                roleType:'1'
+                roleType:'1',
+                phone:'',
+                selectTags:[],
             },
+            tagsList:[
+                {label:'婚姻法',value:'婚姻法'},
+                {label:'审计法',value:'审计法'},
+                {label:'合同法',value:'合同法'},
+                {label:'刑事诉讼法',value:'刑事诉讼法'},
+                {label:'未成年人保护法',value:'未成年人保护法'},
+                {label:'民事诉讼法',value:'民事诉讼法'},
+                {label:'广告法',value:'广告法'},
+                {label:'诉讼法',value:'诉讼法'},
+                {label:'会计法',value:'会计法'},
+                {label:'行政处罚法',value:'行政处罚法'},
+                {label:'其他法律',value:'其他法律'},
+            ],
             loginRules: {
                 nickname: [{ required: true, trigger: 'blur', validator: validateNickname }],
                 username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -145,13 +185,16 @@ export default {
         handleLogin() {
             this.$refs.loginForm.validate(valid => {
                 if (valid) {
-                    let {nickname,username,password,roleType} = this.loginForm;
+                    let {nickname,username,password,roleType,phone,selectTags} = this.loginForm;
                     let msg = {
                         nickname,
                         username,
                         password,
-                        roleType
+                        roleType,
+                        phone,
+                        tags:JSON.stringify(selectTags)
                     }
+                    console.log()
                     let callback = {
                         onOk: (data) => {
                             console.log(data);

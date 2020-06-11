@@ -23,7 +23,7 @@
                             <div class="clear"></div>
                         </ul>
                         <div class="login">
-                             <el-button size="medium">用户中心</el-button>
+                             <el-button size="medium" @click="goUserDetails">用户中心</el-button>
                         </div>
                     </div>
             </div>
@@ -620,6 +620,9 @@
                 this.see5= true;
                 return;
             }
+        },
+        goUserDetails(){
+            this.$router.push({name:'userDetails',params:{userId:sessionStorage.getItem('userId')}});
         },
         handleScroll(){
             var scrollTop =

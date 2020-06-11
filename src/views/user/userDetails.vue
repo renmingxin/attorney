@@ -6,28 +6,23 @@
                 <div class="touxiang">
                     <img src="@/images/u1.jpg" alt="">
                 </div>
-                <div class="name">{{userName}}</div>
+                <div class="name">{{userMessage.name}}</div>
                 <div class="call">
-                    <span>联系方式：17722112121</span>
-                    <span>职称：四级律师</span>
+                    <span>联系方式：{{userMessage.phone}}</span>
+                    <span>职称：{{tags.length}}级律师</span>
                 </div>
                 <div class="classes">
-                    <div>劳动法</div>
-                    <div>刑事诉讼法</div>
-                    <div>未成年人保护法</div>
-                    <div>民事诉讼法</div>
+                    <div v-for="(item,index) in tags" :key="index">{{item}}</div>
                 </div>
            </div>
        </div>
        <div class="container-user-body">
            <div class="container-user-body-left">
                <div class="nav">
-                   <span :class="{active:activeNav === 1}" @click="activeNav = 1">文档</span>
-                   <span :class="{active:activeNav === 2}" @click="activeNav = 2">回答</span>
+                   <span :class="{active:activeNav === 1}" @click="activeNav = 1">回答</span>
                </div>
                <div class="content">
-                   <p v-if="activeNav == 1">该用户还没有发表任何文章</p>
-                   <p v-else>该用户还没有回答任何问题</p>
+                   该用户还没有发表任何回答
                </div>
            </div>
            <div class="container-user-body-right">
@@ -48,7 +43,6 @@
                                 </div>
                            </li>
                        </ul>
-                       
                    </div>
                </div>
                <div class="comment">
@@ -61,7 +55,7 @@
                                 </div>
                                 <div class="comment-list-right">
                                     <div>
-                                        <span style="color:#751a29">{{userName}}：</span>
+                                        <span style="color:#751a29">{{userMessage.name}}：</span>
                                         <span>{{item.comment}}</span>
                                     </div>
                                     <div>
@@ -160,7 +154,8 @@ export default {
                     date:'40分钟之前'
                 },
             ],
-            userName:''
+            userMessage:{},
+            tags:[],
         }
 	},
 	computed:{
@@ -170,11 +165,27 @@ export default {
 
 	},
 	mounted(){
-        console.log(this.$route.params)
-        this.userName = this.$route.params.name;
+        this.getUserDetails();
 	},
 	methods:{
-		
+		getUserDetails(){
+            let userId = this.$route.params.userId;
+            let msg = {
+                userId
+            }
+            let callback = {
+                onOk: (data) => {
+                    if(!data.errno){
+                        this.userMessage = data;
+                        this.tags = JSON.parse(data.tags); 
+                    }
+                },
+                onError: (error) => {
+                    console.log(error)
+                }
+            }
+            this.$Http.post('/users/getUserDetails', msg, callback)
+        }
 	}
 }
 </script>
