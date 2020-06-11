@@ -10,6 +10,18 @@ const selectIssueList = ()=>{
 
 };
 
+//根据回答者的userid来找问题列表
+const selectAnswerByUserid = (userid)=>{
+    const sql = `
+        SELECT * FROM answer WHERE user_id = '${userid}';
+    `;
+    return exec(sql).then(rows=>{
+        return rows || null
+    })
+
+};
+
+
 //用问题id去查answer表 问答的回答页面
 const getIssueAnswerList = (id)=>{
     const sql = `
@@ -97,5 +109,6 @@ module.exports = {
     putIssue,
     zainaAnswer,
     zainaAnswerAddMoney,
-    lessMoney
+    lessMoney,
+    selectAnswerByUserid
 };

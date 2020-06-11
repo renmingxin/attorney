@@ -8,7 +8,8 @@ let {
     getIssueAnswerList,
     zainaAnswer,
     zainaAnswerAddMoney,
-    lessMoney
+    lessMoney,
+    selectAnswerByUserid,
 } = require('../controller/issue')
 /* GET users listing. */
 
@@ -109,6 +110,20 @@ router.post('/zainaAnswerAddMoney', function(req, res, next) {
 router.post('/lessMoney', function(req, res, next) {
     let { userId,money} = req.body;
     let lastData = lessMoney(userId * 1, money * 1);
+    lastData.then(response=>{
+        res.json({
+            msg:response
+        })
+    }).catch(rej=>{
+        res.json({
+            msg:rej
+        })
+    })
+});
+
+router.post('/selectAnswerByUserid', function(req, res, next) {
+    let { userId } = req.body;
+    let lastData = selectAnswerByUserid(userId * 1);
     lastData.then(response=>{
         res.json({
             msg:response
